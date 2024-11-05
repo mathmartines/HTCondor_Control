@@ -11,7 +11,8 @@ from pathlib import Path
 if __name__ == "__main__":
     # list of folders containning the simulations
     simulations_folders = [
-        "SM", "cphi1T", "cBWT", "D4FT"
+        # "cBWT-cBWT", "cphi1T-cBWT", "cphi1T-cphi1T", "cphi1T-D4FT", "D4FT-cBWT",
+        "D4FT-D4FT"
     ]
     # creating folders we wish to simulate
     # the key represents the name we use to identify the logs and the values the parameters for the executable
@@ -28,14 +29,15 @@ if __name__ == "__main__":
                                     f"/data/01/martines/MG5_aMC_v3_1_1/PhD/DY/delphes_card_CMS_dilepton.tcl"
         }
 
-        for coef in simulations_folders for bin_index in range(1, 30)
+        for coef in simulations_folders for bin_index in range(5, 30)
     }
 
     # creates the list of jobs and the dagger
     submit_builder = SubmitBuilder(
         executable="./bash_scripts/launch_delphes.sh",
         jobs=submission_dict,
-        logs_folderpah="/data/01/martines/hep_programs/HTCondor_Control/Logs/DY"
+        logs_folderpah="/data/01/martines/hep_programs/HTCondor_Control/Logs/DY",
+        requirements='(Machine=="fmahep.if.usp.br")'
     )
 
     dag_creator = DagCreator(max_number_jobs=6, jobs_list=submit_builder.create_submission_list())
@@ -43,7 +45,7 @@ if __name__ == "__main__":
 
     # saves the dag file in the Logs folder
     dag_dir = (Path.cwd() / "Logs/DY").absolute()
-    dag_file = dags.write_dag(dag, dag_dir)
+    dag_file = dags.write_dag(dag, dag_dir, dag_file_name="delphes.dag")
 
     # submit the job
     dag_submit = htcondor.Submit.from_dag(str(dag_file), {'force': True})
