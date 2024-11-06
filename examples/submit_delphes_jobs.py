@@ -55,6 +55,7 @@ if __name__ == "__main__":
                 )
             )
 
+    # creates the dag where only 5 jobs are allowed to run at the same time
     dag_creator = DagCreator(max_number_jobs=5, jobs_list=jobs_list)
     dag = dag_creator.build_dag()
 
