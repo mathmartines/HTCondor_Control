@@ -1,4 +1,5 @@
 """Defines the class to handle the creation of the Submit objects"""
+"""Obsolete: it does not give a lot of flexibility"""
 
 import htcondor
 from typing import Dict, List
@@ -7,11 +8,13 @@ from typing import Dict, List
 class SubmitBuilder:
     """Responsible to create a list of jobs to be submited to the server"""
 
-    def __init__(self, executable: str, jobs: Dict[str, Dict[str, List]], logs_folderpah: str, requirements: str):
+    def __init__(self, executable: str, jobs: Dict[str, Dict[str, List]], logs_folderpah: str, requirements: str,
+                 output_files):
         self._exectuble = executable  # stores the path of the executable file
         self._jobs = jobs  # stores a dict, where the keys represent one job and the values a dict with the arguments
         self._logs_folderpath = logs_folderpah  # path to where the log files must be saved
         self._requirements = requirements
+        self._output_files = output_files
 
     def create_submission_list(self) -> List[htcondor.Submit]:
         """Creates the list with all the Submit objects"""
@@ -29,10 +32,10 @@ class SubmitBuilder:
                     error=f"{self._logs_folderpath}/{sub_name}.err",
                     should_transfer_files="YES",
                     getenv=True,
-                    request_cpus=10,
+                    # request_cpus=10,
                     requirements=self._requirements,
-                    request_memory="4GB",
-                    # transfer_output_files="unweighted_events.lhe.gz, RunWeb",
+                    # request_memory="4GB",
+                    transfer_output_files=f"{self._output_files}",
                     when_to_transfer_output="ON_EXIT",
                     # transfer_output_remaps=f"'unweighted_events.lhe.gz=f"
                 )
