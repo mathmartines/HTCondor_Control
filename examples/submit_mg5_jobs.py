@@ -2,7 +2,6 @@
 
 """Example on how to use the SubmitBuilder class"""
 
-from src.SubmitBuilder import SubmitBuilder
 from src.DagCreator import DagCreator
 from htcondor import dags
 import htcondor
