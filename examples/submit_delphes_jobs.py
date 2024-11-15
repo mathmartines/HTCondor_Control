@@ -2,7 +2,7 @@
 
 """Example on how to use the SubmitBuilder class"""
 
-from src.DagCreator import DagCreator
+from HTCondor_Control.src.DagCreator import DagCreator
 from htcondor import dags
 import htcondor
 from pathlib import Path

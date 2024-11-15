@@ -16,6 +16,6 @@ delphes_exe=/data/01/martines/Tools/Delphes-3.5.0/DelphesHepMC2
 #export DYLD_LIBRARY_PATH=/usr/include/root/lib:${DYLD_LIBRARY_PATH}
 
 cd ${folderpath}
-#gunzip ${pythia_file}.gz
+gunzip ${pythia_file}.gz
 ${delphes_exe} ${conf_card} ${folderpath}/${root_file} ${folderpath}/${pythia_file}
 gzip ${pythia_file}

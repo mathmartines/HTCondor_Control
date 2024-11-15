@@ -2,7 +2,7 @@
 
 """Example on how to use the SubmitBuilder class"""
 
-from src.DagCreator import DagCreator
+from HTCondor_Control.src.DagCreator import DagCreator
 from htcondor import dags
 import htcondor
 from pathlib import Path
@@ -30,7 +30,7 @@ def pythia8_jobs_template(
         request_cpus=1,
         # request_memory="1GB",
         getenv=True,
-        # requirements='(Machine!="fmahep.if.usp.br") && (Machine!="fmahep02.if.usp.br")',
+        requirements='(Machine!="fmahep.if.usp.br")',
         when_to_transfer_output="ON_EXIT",
     )
 
