@@ -46,24 +46,24 @@ def mg5_job_template(input_files: str, log_name: str) -> htcondor.Submit:
         request_memory=4096,
         RunAsOwner=True,
         getenv=True,
-        # requirements='(Machine!="fmahep.if.usp.br")',
+        requirements='(Machine=="fmahep.if.usp.br")',
         when_to_transfer_output="ON_EXIT",
     )
 
 
 if __name__ == "__main__":
     # list all the directories we need to run the simulations
-    simulations_folders = list_folders(Path("/data/01/martines/MG5_aMC_v3_1_1/PhD/HighPT/atlas-ditau-13TEV"))
+    simulations_folders = list_folders(Path("/data/01/martines/MG5_aMC_v3_1_1/PhD/High-PT/atlas-ditau-13TEV"))
 
     # default commands
-    commands = MG5CardCommands(nevents=50000, ptl=0, etal=2.8, drll=0.0, use_syst=False)
+    commands = MG5CardCommands(nevents=50000, ptl=0, etal=2.8, drll=0.0, pdlabel="lhapdf", lhaid=91500, use_syst=False)
     # command to generate the Wilson coefficients
     wc_commands = FlavorWilsonCoefs(all_coefs=["C1lq", "C3lq"], number_indices_pairs=2)
     commands.add_command(wc_commands)
 
     # holds all the jobs to run
     jobs_list = []
-    logs_folder = "/data/01/martines/hep_programs/HTCondor_Control/Logs/HighPT"
+    logs_folder = "/data/01/martines/hep_programs/HTCondor_Control/Logs/High-PT"
     # creates the script for the run and runs the simulation
     for simulation in map(get_simulation_info, simulations_folders):
         print(f"INFO: creating script for simulation {simulation['path']}")
@@ -89,7 +89,7 @@ if __name__ == "__main__":
         )
 
     # creates a dag where only 30 jobs are allowed to run at the same time
-    dag_creator = DagCreator(max_number_jobs=10, jobs_list=jobs_list)
+    dag_creator = DagCreator(max_number_jobs=5, jobs_list=jobs_list)
     dag = dag_creator.build_dag()
 
     dag_file = dags.write_dag(dag, logs_folder, dag_file_name="mg5.dag")

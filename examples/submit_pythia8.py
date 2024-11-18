@@ -27,7 +27,7 @@ def pythia8_jobs_template(
         output=f"{log_name}.out",
         error=f"{log_name}.err",
         should_transfer_files="YES",
-        request_cpus=1,
+        request_cpus=3,
         # request_memory="1GB",
         getenv=True,
         requirements='(Machine!="fmahep.if.usp.br")',
